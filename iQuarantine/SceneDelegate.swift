@@ -25,13 +25,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func navigateToInitialVC(window: UIWindow?) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if Auth.auth().currentUser != nil {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let homeViewController = storyboard.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
             window?.rootViewController = homeViewController
             window?.makeKeyAndVisible()
         } else {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let initialViewController = storyboard.instantiateViewController(identifier: Constants.Storyboard.initialViewController) as? InitialViewController
             window?.rootViewController = initialViewController
             window?.makeKeyAndVisible()
