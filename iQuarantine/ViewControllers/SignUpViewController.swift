@@ -81,7 +81,7 @@ class SignUpViewController: UIViewController {
             } else {
                 guard let result = result else { return }
                 let db = Firestore.firestore()
-                db.collection("users").addDocument(data: [
+                db.collection("users").document("\(result.user.uid)").setData([
                     "firstName": firstName,
                     "lastName": lastName,
                     "uid": result.user.uid

@@ -7,24 +7,34 @@
 //
 
 import UIKit
+import Firebase
 
 class HomeViewController: UIViewController {
-
+    
+    let db = Firestore.firestore()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        db.collection("users").document(uid).getDocument { (document, error) in
+            if error == nil {
+                if let document = document, document.exists {
+                    guard let documentData = document.data() else { return }
+                    guard let name = documentData["firstName"] as? String else { return }
+                    
+                    DispatchQueue.main.async {
+                        self.title = "Welcome \(name)!"
+                    }
+                }
+            }
+        }
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func onStartQuarantine(_ sender: UIButton) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        db.collection("users").document(uid).setData([
+            "timestamp": Date()
+        ], merge: true)
     }
-    */
-
 }
