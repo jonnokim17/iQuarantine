@@ -1,0 +1,6 @@
+framework module Pods_iQuarantine {
+  umbrella header "Pods-iQuarantine-umbrella.h"
+
+  export *
+  module * { export * }
+}
