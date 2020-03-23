@@ -9,7 +9,7 @@
 import UIKit
 import AVKit
 
-class ViewController: UIViewController {
+class InitialViewController: UIViewController {
 
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var loginButton: UIButton!
