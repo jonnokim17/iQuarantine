@@ -13,6 +13,8 @@ class HomeViewController: UIViewController {
     
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var timerLabel: UILabel!
+    @IBOutlet weak var dayCounterLabel: UILabel!
+    @IBOutlet weak var hoursCounterLabel: UILabel!
     
     var timeLeft: TimeInterval = 86400
     var endTime: Date?
@@ -20,6 +22,7 @@ class HomeViewController: UIViewController {
     
     let db = Firestore.firestore()
     var documentDataDict: [String: Any]!
+    var startDate = Date()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,28 +40,23 @@ class HomeViewController: UIViewController {
                         self.title = "Welcome \(name)!"
                     }
                     
-                    self.startTimer(initialStart: false)
+                    self.startTimer()
                 }
             }
         }
     }
     
-    private func startTimer(initialStart: Bool) {
-        var startDate: Date
-        if initialStart {
-            startDate = Date()
-        } else {
-            guard let timestamp = documentDataDict["timestamp"] as? Timestamp else {
-                self.startButton.isHidden = false
-                self.timerLabel.text = "00:00:00"
-                return
-            }
-            startDate = timestamp.dateValue()
-        }
+    private func startTimer() {
+        let endOfDate = Date().endOfDay
+        let seconds = endOfDate.timeIntervalSince(Date())
+        timeLeft = seconds
         
-        let endOfDate = startDate.endOfDay
-        let seconds = endOfDate.timeIntervalSince(startDate)
-        self.timeLeft = seconds
+        guard let timestamp = documentDataDict["timestamp"] as? Timestamp else {
+            self.startButton.isHidden = false
+            self.timerLabel.text = "00:00:00"
+            return
+        }
+        startDate = timestamp.dateValue()
         
         DispatchQueue.main.async {
             self.startButton.isHidden = true
@@ -69,6 +67,22 @@ class HomeViewController: UIViewController {
     }
     
     @objc func updateTime() {
+        let difference = Calendar.current.dateComponents([.day, .hour, .minute, .second], from: Date(), to: startDate)
+        guard let day = difference.day,
+            let hour = difference.hour,
+            let minute = difference.minute,
+            let second = difference.second
+        else { return }
+        
+        let formattedDayString = String(format: "%2ld Days", day)
+        let cleanedFormattedDayString = formattedDayString.replacingOccurrences(of: "-", with: "")
+        
+        dayCounterLabel.text = "Number of Days: \(cleanedFormattedDayString)"
+        
+        let formattedHourString = String(format: "%02ld Hours, %02ld Minutes, %02ld Seconds", hour, minute, second)
+        let cleanedHourFormattedString = formattedHourString.replacingOccurrences(of: "-", with: "")
+        hoursCounterLabel.text = cleanedHourFormattedString
+        
         if timeLeft > 0 {
             timeLeft = endTime?.timeIntervalSinceNow ?? 0
             timerLabel.text = timeString(time: timeLeft)
@@ -93,7 +107,7 @@ class HomeViewController: UIViewController {
             "timestamp": Date()
         ], merge: true)
         
-        startTimer(initialStart: true)
+        startTimer()
     }
 }
 
@@ -111,5 +125,18 @@ extension Date {
         components.day = 1
         let date = Calendar.current.date(byAdding: components, to: self.startOfDay)
         return (date?.addingTimeInterval(-1))!
+    }
+}
+
+extension Date {
+
+    func interval(ofComponent comp: Calendar.Component, fromDate date: Date) -> Int {
+
+        let currentCalendar = Calendar.current
+
+        guard let start = currentCalendar.ordinality(of: comp, in: .era, for: date) else { return 0 }
+        guard let end = currentCalendar.ordinality(of: comp, in: .era, for: self) else { return 0 }
+
+        return end - start
     }
 }
