@@ -153,7 +153,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gf9-m6-sry">
-                                <rect key="frame" x="20" y="188" width="374" height="40"/>
+                                <rect key="frame" x="20" y="168" width="374" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="UM9-cf-KaI"/>
                                 </constraints>
@@ -162,7 +162,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="iBE-Tq-LTx">
-                                <rect key="frame" x="20" y="128" width="374" height="40"/>
+                                <rect key="frame" x="20" y="108" width="374" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="j1t-zi-Rjz"/>
                                 </constraints>
@@ -170,16 +170,26 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <mapView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R6q-cB-IHR">
+                                <rect key="frame" x="20" y="228" width="374" height="634"/>
+                                <connections>
+                                    <outlet property="delegate" destination="sa8-JA-FFP" id="Y9n-ty-8rH"/>
+                                </connections>
+                            </mapView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="YU2-Te-YqG" firstAttribute="centerY" secondItem="HJK-Yk-gGZ" secondAttribute="centerY" id="1Vw-45-Ajb"/>
                             <constraint firstItem="HJK-Yk-gGZ" firstAttribute="trailing" secondItem="gf9-m6-sry" secondAttribute="trailing" constant="20" id="1qh-3Y-gtZ"/>
                             <constraint firstItem="YU2-Te-YqG" firstAttribute="centerX" secondItem="HJK-Yk-gGZ" secondAttribute="centerX" id="3QI-Zr-PEp"/>
+                            <constraint firstItem="HJK-Yk-gGZ" firstAttribute="trailing" secondItem="R6q-cB-IHR" secondAttribute="trailing" constant="20" id="5fr-vC-e7N"/>
                             <constraint firstItem="gf9-m6-sry" firstAttribute="top" secondItem="iBE-Tq-LTx" secondAttribute="bottom" constant="20" id="5vn-IK-qaM"/>
-                            <constraint firstItem="iBE-Tq-LTx" firstAttribute="top" secondItem="HJK-Yk-gGZ" secondAttribute="top" constant="40" id="Caz-al-Jqc"/>
+                            <constraint firstItem="iBE-Tq-LTx" firstAttribute="top" secondItem="HJK-Yk-gGZ" secondAttribute="top" constant="20" id="Caz-al-Jqc"/>
                             <constraint firstItem="gf9-m6-sry" firstAttribute="leading" secondItem="HJK-Yk-gGZ" secondAttribute="leading" constant="20" id="SWy-e6-BGS"/>
+                            <constraint firstItem="R6q-cB-IHR" firstAttribute="top" secondItem="gf9-m6-sry" secondAttribute="bottom" constant="20" id="auG-bq-aww"/>
+                            <constraint firstItem="R6q-cB-IHR" firstAttribute="bottom" secondItem="HJK-Yk-gGZ" secondAttribute="bottom" id="efv-mM-syx"/>
                             <constraint firstItem="HJK-Yk-gGZ" firstAttribute="trailing" secondItem="iBE-Tq-LTx" secondAttribute="trailing" constant="20" id="kto-jQ-4ug"/>
+                            <constraint firstItem="R6q-cB-IHR" firstAttribute="leading" secondItem="HJK-Yk-gGZ" secondAttribute="leading" constant="20" id="mWA-2Z-n0z"/>
                             <constraint firstItem="iBE-Tq-LTx" firstAttribute="leading" secondItem="HJK-Yk-gGZ" secondAttribute="leading" constant="20" id="zEa-ip-krz"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="HJK-Yk-gGZ"/>
@@ -194,6 +204,7 @@
                     <connections>
                         <outlet property="dayCounterLabel" destination="iBE-Tq-LTx" id="mFy-Pq-LZt"/>
                         <outlet property="hoursCounterLabel" destination="gf9-m6-sry" id="9JB-da-Ipp"/>
+                        <outlet property="mapView" destination="R6q-cB-IHR" id="xHa-6L-ffY"/>
                         <outlet property="startButton" destination="YU2-Te-YqG" id="ptI-Nm-uPh"/>
                     </connections>
                 </viewController>

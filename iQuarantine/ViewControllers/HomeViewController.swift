@@ -8,12 +8,15 @@
 
 import UIKit
 import Firebase
+import MapKit
+import CoreLocation
 
 class HomeViewController: UIViewController {
     
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var dayCounterLabel: UILabel!
     @IBOutlet weak var hoursCounterLabel: UILabel!
+    @IBOutlet weak var mapView: MKMapView!
     
     var timeLeft: TimeInterval = 86400
     var timer = Timer()
@@ -21,6 +24,10 @@ class HomeViewController: UIViewController {
     let db = Firestore.firestore()
     var documentDataDict: [String: Any]!
     var startDate = Date()
+    
+    let locationManager = CLLocationManager()
+    private let regionInMeters: Double = 1000
+    private var locationCheckFlag = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,23 +77,88 @@ class HomeViewController: UIViewController {
         let formattedHourString = String(format: "%02ld Hours, %02ld Minutes, %02ld Seconds", hour, minute, second)
         let cleanedHourFormattedString = formattedHourString.replacingOccurrences(of: "-", with: "")
         hoursCounterLabel.text = cleanedHourFormattedString
+        
+        if self.hoursCounterLabel.text != "" && !locationCheckFlag {
+            locationCheckFlag = true
+            checkLocationServices()
+        }
+    }
+    
+    private func setupLocationManager() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+    }
+    
+    private func centerViewOnUserLocation() {
+        if let location = locationManager.location?.coordinate {
+            let region = MKCoordinateRegion.init(center: location, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
+            mapView.setRegion(region, animated: true)
+        }
+    }
+    
+    private func checkLocationServices() {
+        if CLLocationManager.locationServicesEnabled() {
+            mapView.isHidden = false
+            setupLocationManager()
+            checkLocationAuthorization()
+            locationManager.startUpdatingLocation()
+        } else {
+            mapView.isHidden = true
+        }
+    }
+    
+    private func checkLocationAuthorization() {
+        switch CLLocationManager.authorizationStatus() {
+        case .authorizedWhenInUse, .authorizedAlways:
+            centerViewOnUserLocation()
+        case .denied:
+            mapView.isHidden = true
+            let alertController = UIAlertController(title: "Please grant iQuarantine Location Services permissions", message: "", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
+                if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(settingsURL)
+                }
+            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+            alertController.addAction(okAction)
+            alertController.addAction(cancelAction)
+            present(alertController, animated: true)
+        case .notDetermined:
+            locationManager.requestAlwaysAuthorization()
+        case .restricted:
+            break
+        @unknown default:
+            break
+        }
     }
     
     @IBAction func onStartQuarantine(_ sender: UIButton) {
+        let alertController = UIAlertController(title: "Please grant iQuarantine Location Services permissions", message: "", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(settingsURL)
+            }
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true)
+        
         guard let uid = Auth.auth().currentUser?.uid else { return }
         db.collection("users").document(uid).setData([
             "timestamp": Date()
         ], merge: true) { [weak self] (error) in
-            if error != nil {
+            if error == nil {
                 self?.startTimer(data: [
                     "timestamp": Timestamp(date: Date())
                 ])
+                self?.checkLocationServices()
             }
         }
     }
     
     @IBAction func onLogout(_ sender: UIBarButtonItem) {
-        let alertController = UIAlertController(title: "Are you sure you want to logout?", message: "", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Are you sure you want to logout?", message: "Quarantine clock will reset once you logout.", preferredStyle: .alert)
         let yesAction = UIAlertAction(title: "Yes", style: .destructive) { _ in
             try? Auth.auth().signOut()
             if Auth.auth().currentUser == nil {
@@ -100,5 +172,18 @@ class HomeViewController: UIViewController {
         alertController.addAction(yesAction)
         alertController.addAction(noAction)
         present(alertController, animated: true)
+    }
+}
+
+extension HomeViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        let region = MKCoordinateRegion.init(center: center, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
+        mapView.setRegion(region, animated: true)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        checkLocationAuthorization()
     }
 }

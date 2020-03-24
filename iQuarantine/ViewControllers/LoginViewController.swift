@@ -59,7 +59,15 @@ class LoginViewController: UIViewController {
             if let err = err {
                 self?.showError(messsage: err.localizedDescription)
             } else {
-                self?.navigateToHome()
+                guard let uid = Auth.auth().currentUser?.uid else { return }
+                let db = Firestore.firestore()
+                db.collection("users").document(uid).setData([
+                    "timestamp": Date()
+                ], merge: true) { [weak self] (error) in
+                    if error == nil {
+                        self?.navigateToHome()
+                    }
+                }
             }
         }
     }
