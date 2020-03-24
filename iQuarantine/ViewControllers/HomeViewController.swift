@@ -184,13 +184,13 @@ extension HomeViewController: CLLocationManagerDelegate {
 
         currentDistanceLabel.text = String(format: "Distance from home: %.01f Feet", distanceInFeet)
         
-        if distanceInFeet <= 150 {
+        if distanceInFeet <= 200 {
             currentDistanceLabel.textColor = .green
-        } else if distanceInFeet <= 300 {
+        } else if distanceInFeet <= 800 {
             currentDistanceLabel.textColor = .yellow
-        } else if distanceInFeet <= 400 {
+        } else if distanceInFeet <= 1200 {
             currentDistanceLabel.textColor = .red
-        } else if distanceInFeet >= 500 {
+        } else if distanceInFeet >= 2000 {
             currentDistanceLabel.textColor = .red
             let alertController = UIAlertController(title: "Quarantine counter will now reset..", message: "Please return home!", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
