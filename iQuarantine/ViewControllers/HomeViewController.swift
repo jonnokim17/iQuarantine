@@ -17,22 +17,25 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var instructionTextView: UITextView!
     @IBOutlet weak var dayCounterLabel: UILabel!
     @IBOutlet weak var hoursCounterLabel: UILabel!
+    @IBOutlet weak var currentDistanceLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var warningLabel: UILabel!
     
     var timeLeft: TimeInterval = 86400
     var timer = Timer()
     
     let db = Firestore.firestore()
     var startDate = Date()
+    private var didStartCounter = false
     
     let locationManager = CLLocationManager()
     private let regionInMeters: Double = 1000
     private var locationCheckFlag = false
+    private var homeCoordinate = CLLocationCoordinate2D()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.navigationBar.prefersLargeTitles = true
         Utilities.styleFilledButton(startButton)
         
         guard let uid = Auth.auth().currentUser?.uid else { return }
@@ -44,11 +47,17 @@ class HomeViewController: UIViewController {
                     
                     let startedCounter = documentData["startedCounter"] as? Bool ?? false
                     if startedCounter {
+                        self.didStartCounter = true
                         self.startTimer(data: documentData)
                     } else {
                         self.startButton.isHidden = false
                         self.instructionTextView.isHidden = false
+                        self.warningLabel.isHidden = false
                     }
+                    
+                    guard let homeLatitude = documentData["latitude"] as? NSNumber else { return }
+                    guard let homeLongitude = documentData["longitude"] as? NSNumber else { return }
+                    self.homeCoordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(truncating: homeLatitude), longitude: CLLocationDegrees(truncating: homeLongitude))
                 }
             }
         }
@@ -58,6 +67,7 @@ class HomeViewController: UIViewController {
         guard let timestamp = data["timestamp"] as? Timestamp else {
             self.startButton.isHidden = false
             self.instructionTextView.isHidden = false
+            self.warningLabel.isHidden = false
             return
         }
         
@@ -66,6 +76,7 @@ class HomeViewController: UIViewController {
         DispatchQueue.main.async {
             self.startButton.isHidden = true
             self.instructionTextView.isHidden = true
+            self.warningLabel.isHidden = true
             self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updateTime), userInfo: nil, repeats: true)
         }
     }
@@ -78,7 +89,7 @@ class HomeViewController: UIViewController {
             let second = difference.second
         else { return }
         
-        let formattedDayString = String(format: "%2ld Days", day)
+        let formattedDayString = String(format: "%2ld", day)
         let cleanedFormattedDayString = formattedDayString.replacingOccurrences(of: "-", with: "")
         
         dayCounterLabel.text = "Number of Days: \(cleanedFormattedDayString)"
@@ -142,9 +153,13 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func onStartQuarantine(_ sender: UIButton) {
+        currentDistanceLabel.isHidden = false
+        dayCounterLabel.isHidden = false
+        hoursCounterLabel.isHidden = false
         guard let uid = Auth.auth().currentUser?.uid else { return }
         db.collection("users").document(uid).setData([
-            "timestamp": Date()
+            "timestamp": Date(),
+            "startedCounter": true
         ], merge: true) { [weak self] (error) in
             if error == nil {
                 self?.startTimer(data: [
@@ -163,20 +178,61 @@ extension HomeViewController: CLLocationManagerDelegate {
         let region = MKCoordinateRegion.init(center: center, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
         mapView.setRegion(region, animated: true)
         
+        let homeLocation = CLLocation(latitude: homeCoordinate.latitude, longitude: homeCoordinate.longitude)
+        let currentLocation = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        let distanceInFeet = homeLocation.distance(from: currentLocation) * 3.281
+
+        currentDistanceLabel.text = String(format: "Distance from home: %.01f Feet", distanceInFeet)
+        
+        if distanceInFeet <= 150 {
+            currentDistanceLabel.textColor = .green
+        } else if distanceInFeet <= 300 {
+            currentDistanceLabel.textColor = .yellow
+        } else if distanceInFeet <= 400 {
+            currentDistanceLabel.textColor = .red
+        } else if distanceInFeet >= 500 {
+            currentDistanceLabel.textColor = .red
+            let alertController = UIAlertController(title: "Quarantine counter will now reset..", message: "Please return home!", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
+                guard let uid = Auth.auth().currentUser?.uid else { return }
+                self.db.collection("users").document(uid).setData([
+                    "startedCounter": false
+                ], merge: true) { (error) in
+                    DispatchQueue.main.async {
+                        self.startButton.isHidden = false
+                        self.instructionTextView.isHidden = false
+                        self.warningLabel.isHidden = false
+                        self.mapView.isHidden = true
+                        self.currentDistanceLabel.isHidden = true
+                        self.dayCounterLabel.isHidden = true
+                        self.hoursCounterLabel.isHidden = true
+                        self.didStartCounter = false
+                    }
+                }
+            }
+            alertController.addAction(okAction)
+            present(alertController, animated: true)
+            return
+        }
+        
         let geocoder = CLGeocoder()
         geocoder.reverseGeocodeLocation(location, completionHandler: { [weak self] (placemarks, error) in
+            guard let self = self else { return }
             if error == nil, let placemark = placemarks, !placemark.isEmpty {
                 if let placemark = placemark.first {
                     guard let city = placemark.locality else { return }
                     guard let state = placemark.administrativeArea else { return }
+                    guard !self.didStartCounter else { return }
                     
                     guard let uid = Auth.auth().currentUser?.uid else { return }
-                    self?.db.collection("users").document(uid).setData([
+                    self.db.collection("users").document(uid).setData([
                         "latitude": location.coordinate.latitude,
                         "longitude": location.coordinate.longitude,
-                        "startedCounter": true,
                         "homeLocation": "\(city), \(state)"
-                    ], merge: true)
+                    ], merge: true) { (error) in
+                        self.didStartCounter = true
+                        self.homeCoordinate = location.coordinate
+                    }
                 }
             }
         })
