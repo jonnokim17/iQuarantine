@@ -132,17 +132,23 @@
                                     <constraint firstItem="tzK-8b-MRd" firstAttribute="height" secondItem="gHP-AW-UgF" secondAttribute="height" id="irE-NA-yhE"/>
                                 </constraints>
                             </stackView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="tyj-zw-8xx">
+                                <rect key="frame" x="188.5" y="456.5" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="tyj-zw-8xx" firstAttribute="centerX" secondItem="2xn-Pf-I9W" secondAttribute="centerX" id="9rC-MX-ikN"/>
                             <constraint firstItem="2xn-Pf-I9W" firstAttribute="trailing" secondItem="CZ1-Tz-raz" secondAttribute="trailing" constant="40" id="LHh-Bq-lWu"/>
                             <constraint firstItem="CZ1-Tz-raz" firstAttribute="leading" secondItem="2xn-Pf-I9W" secondAttribute="leading" constant="40" id="XP0-tg-VTo"/>
+                            <constraint firstItem="tyj-zw-8xx" firstAttribute="centerY" secondItem="2xn-Pf-I9W" secondAttribute="centerY" id="ezM-Uu-s2A"/>
                             <constraint firstItem="CZ1-Tz-raz" firstAttribute="top" secondItem="2xn-Pf-I9W" secondAttribute="top" constant="40" id="z5P-fc-WdZ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="2xn-Pf-I9W"/>
                     </view>
                     <navigationItem key="navigationItem" title="Sign Up" id="2kd-AU-tnP"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="tyj-zw-8xx" id="KwD-a9-BJe"/>
                         <outlet property="emailTextField" destination="bjl-t2-06z" id="hJb-hE-Sri"/>
                         <outlet property="errorLabel" destination="VeT-P5-XDI" id="ypo-Yf-n44"/>
                         <outlet property="firstNameTextField" destination="gHP-AW-UgF" id="aiS-c9-Qau"/>
@@ -304,17 +310,23 @@
                                     <constraint firstItem="lyu-1v-Dgd" firstAttribute="height" secondItem="md0-ZV-3Rk" secondAttribute="height" id="lhq-LH-Aoa"/>
                                 </constraints>
                             </stackView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="Gf5-Sn-plx">
+                                <rect key="frame" x="188.5" y="456.5" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="Gf5-Sn-plx" firstAttribute="centerX" secondItem="JVU-1g-veN" secondAttribute="centerX" id="EjW-XZ-yLA"/>
                             <constraint firstItem="Yge-Qq-Eg3" firstAttribute="leading" secondItem="JVU-1g-veN" secondAttribute="leading" constant="40" id="cBu-W0-lfF"/>
                             <constraint firstItem="Yge-Qq-Eg3" firstAttribute="top" secondItem="JVU-1g-veN" secondAttribute="top" constant="40" id="gXa-ow-goD"/>
+                            <constraint firstItem="Gf5-Sn-plx" firstAttribute="centerY" secondItem="JVU-1g-veN" secondAttribute="centerY" id="h5b-RN-Kh7"/>
                             <constraint firstItem="JVU-1g-veN" firstAttribute="trailing" secondItem="Yge-Qq-Eg3" secondAttribute="trailing" constant="40" id="jzW-DO-A32"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="JVU-1g-veN"/>
                     </view>
                     <navigationItem key="navigationItem" title="Login" id="IR9-k5-7zO"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="Gf5-Sn-plx" id="yvD-Tj-fyF"/>
                         <outlet property="emailTextField" destination="md0-ZV-3Rk" id="FbU-2H-nfr"/>
                         <outlet property="errorLabel" destination="Bgx-cX-U2c" id="fhg-S0-yx9"/>
                         <outlet property="loginButton" destination="lyu-1v-Dgd" id="4a7-Zo-lxD"/>

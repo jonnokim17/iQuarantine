@@ -36,7 +36,7 @@ class SettingsTableViewController: UITableViewController {
                     guard let firstName = documentData["firstName"] as? String else { return }
                     guard let lastName = documentData["lastName"] as? String else { return }
                     guard let email = documentData["email"] as? String else { return }
-                    guard let homeLocation = documentData["homeLocation"] as? String else { return }
+                    let homeLocation = documentData["homeLocation"] as? String ?? "N/A"
                     
                     DispatchQueue.main.async {
                         self.firstNameLabel.text = firstName

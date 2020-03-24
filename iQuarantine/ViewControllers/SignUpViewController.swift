@@ -17,6 +17,7 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,9 +63,11 @@ class SignUpViewController: UIViewController {
     }
     
     @IBAction func onSignUp(_ sender: UIButton) {
+        activityIndicator.startAnimating()
         let error = validateFields()
         
         guard error == nil else {
+            activityIndicator.stopAnimating()
             showError(messsage: error ?? "")
             return
         }
@@ -77,6 +80,7 @@ class SignUpViewController: UIViewController {
         
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] (result, err) in
             if let _ = err {
+                self?.activityIndicator.stopAnimating()
                 self?.showError(messsage: "Error creating user.")
             } else {
                 guard let result = result else { return }
@@ -87,6 +91,7 @@ class SignUpViewController: UIViewController {
                     "uid": result.user.uid,
                     "email": email
                 ]) { (err) in
+                    self?.activityIndicator.stopAnimating()
                     if let err = err {
                         self?.showError(messsage: "Error: \(err.localizedDescription)")
                     }

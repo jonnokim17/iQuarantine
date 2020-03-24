@@ -15,6 +15,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,11 +52,14 @@ class LoginViewController: UIViewController {
     }
     
     private func signIn() {
+        activityIndicator.startAnimating()
         guard let email = emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else { return }
         guard let password = passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else { return }
         
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] (result, err) in
             if let err = err {
+                self?.activityIndicator.stopAnimating()
+                self?.activityIndicator.stopAnimating()
                 self?.showError(messsage: err.localizedDescription)
             } else {
                 guard let uid = Auth.auth().currentUser?.uid else { return }
@@ -63,6 +67,7 @@ class LoginViewController: UIViewController {
                 db.collection("users").document(uid).setData([
                     "timestamp": Date()
                 ], merge: true) { [weak self] (error) in
+                    self?.activityIndicator.stopAnimating()
                     if error == nil {
                         self?.navigateToHome()
                     }
