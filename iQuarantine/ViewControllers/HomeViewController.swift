@@ -25,27 +25,23 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
         guard let uid = Auth.auth().currentUser?.uid else { return }
         db.collection("users").document(uid).getDocument { [weak self] (document, error) in
             guard let self = self else { return }
             if error == nil {
                 if let document = document, document.exists {
                     guard let documentData = document.data() else { return }
-                    self.documentDataDict = documentData
-                    guard let name = documentData["firstName"] as? String else { return }
-                                                                                
-                    DispatchQueue.main.async {
-                        self.title = "Welcome \(name)!"
-                    }
                     
-                    self.startTimer()
+                    self.startTimer(data: documentData)
                 }
             }
         }
     }
     
-    private func startTimer() {
-        guard let timestamp = documentDataDict["timestamp"] as? Timestamp else {
+    private func startTimer(data: [String: Any]) {
+        guard let timestamp = data["timestamp"] as? Timestamp else {
             self.startButton.isHidden = false
             return
         }
@@ -80,8 +76,29 @@ class HomeViewController: UIViewController {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         db.collection("users").document(uid).setData([
             "timestamp": Date()
-        ], merge: true)
-        
-        startTimer()
+        ], merge: true) { [weak self] (error) in
+            if error != nil {
+                self?.startTimer(data: [
+                    "timestamp": Timestamp(date: Date())
+                ])
+            }
+        }
+    }
+    
+    @IBAction func onLogout(_ sender: UIBarButtonItem) {
+        let alertController = UIAlertController(title: "Are you sure you want to logout?", message: "", preferredStyle: .alert)
+        let yesAction = UIAlertAction(title: "Yes", style: .destructive) { _ in
+            try? Auth.auth().signOut()
+            if Auth.auth().currentUser == nil {
+                guard let initialViewController = self.storyboard?.instantiateViewController(identifier: Constants.Storyboard.initialViewController) as? InitialViewController else { return }
+                let navVC = UINavigationController(rootViewController: initialViewController)
+                self.view.window?.rootViewController = navVC
+                self.view.window?.makeKeyAndVisible()
+            }
+        }
+        let noAction = UIAlertAction(title: "No", style: .cancel)
+        alertController.addAction(yesAction)
+        alertController.addAction(noAction)
+        present(alertController, animated: true)
     }
 }

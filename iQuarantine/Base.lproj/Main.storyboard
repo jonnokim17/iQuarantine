@@ -137,7 +137,7 @@
             </objects>
             <point key="canvasLocation" x="1507" y="-185"/>
         </scene>
-        <!--Home View Controller-->
+        <!--Quarantine Counter-->
         <scene sceneID="Stu-OY-OEi">
             <objects>
                 <viewController storyboardIdentifier="HomeVC" id="sa8-JA-FFP" customClass="HomeViewController" customModule="iQuarantine" customModuleProvider="target" sceneMemberID="viewController">
@@ -152,14 +152,8 @@
                                     <action selector="onStartQuarantine:" destination="sa8-JA-FFP" eventType="touchUpInside" id="12q-XB-TPK"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Quarantine Counter" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H1u-oq-H0V">
-                                <rect key="frame" x="20" y="168" width="374" height="41"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="34"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gf9-m6-sry">
-                                <rect key="frame" x="20" y="285" width="374" height="40"/>
+                                <rect key="frame" x="20" y="188" width="374" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="UM9-cf-KaI"/>
                                 </constraints>
@@ -168,7 +162,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="iBE-Tq-LTx">
-                                <rect key="frame" x="20" y="225" width="374" height="40"/>
+                                <rect key="frame" x="20" y="128" width="374" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="j1t-zi-Rjz"/>
                                 </constraints>
@@ -181,21 +175,22 @@
                         <constraints>
                             <constraint firstItem="YU2-Te-YqG" firstAttribute="centerY" secondItem="HJK-Yk-gGZ" secondAttribute="centerY" id="1Vw-45-Ajb"/>
                             <constraint firstItem="HJK-Yk-gGZ" firstAttribute="trailing" secondItem="gf9-m6-sry" secondAttribute="trailing" constant="20" id="1qh-3Y-gtZ"/>
-                            <constraint firstItem="iBE-Tq-LTx" firstAttribute="top" secondItem="H1u-oq-H0V" secondAttribute="bottom" constant="16" id="2GF-Pa-Qd6"/>
                             <constraint firstItem="YU2-Te-YqG" firstAttribute="centerX" secondItem="HJK-Yk-gGZ" secondAttribute="centerX" id="3QI-Zr-PEp"/>
                             <constraint firstItem="gf9-m6-sry" firstAttribute="top" secondItem="iBE-Tq-LTx" secondAttribute="bottom" constant="20" id="5vn-IK-qaM"/>
-                            <constraint firstItem="H1u-oq-H0V" firstAttribute="top" secondItem="HJK-Yk-gGZ" secondAttribute="top" constant="80" id="Cp4-tZ-1Ik"/>
-                            <constraint firstItem="gf9-m6-sry" firstAttribute="trailing" secondItem="H1u-oq-H0V" secondAttribute="trailing" id="OZj-BG-s70"/>
-                            <constraint firstItem="HJK-Yk-gGZ" firstAttribute="trailing" secondItem="H1u-oq-H0V" secondAttribute="trailing" constant="20" id="S9n-XV-fXe"/>
+                            <constraint firstItem="iBE-Tq-LTx" firstAttribute="top" secondItem="HJK-Yk-gGZ" secondAttribute="top" constant="40" id="Caz-al-Jqc"/>
                             <constraint firstItem="gf9-m6-sry" firstAttribute="leading" secondItem="HJK-Yk-gGZ" secondAttribute="leading" constant="20" id="SWy-e6-BGS"/>
-                            <constraint firstItem="gf9-m6-sry" firstAttribute="leading" secondItem="H1u-oq-H0V" secondAttribute="leading" id="jTv-QQ-fvw"/>
                             <constraint firstItem="HJK-Yk-gGZ" firstAttribute="trailing" secondItem="iBE-Tq-LTx" secondAttribute="trailing" constant="20" id="kto-jQ-4ug"/>
-                            <constraint firstItem="H1u-oq-H0V" firstAttribute="leading" secondItem="HJK-Yk-gGZ" secondAttribute="leading" constant="20" id="u7c-Ok-1eM"/>
                             <constraint firstItem="iBE-Tq-LTx" firstAttribute="leading" secondItem="HJK-Yk-gGZ" secondAttribute="leading" constant="20" id="zEa-ip-krz"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="HJK-Yk-gGZ"/>
                     </view>
-                    <navigationItem key="navigationItem" id="bGp-vt-DqN"/>
+                    <navigationItem key="navigationItem" title="Quarantine Counter" id="bGp-vt-DqN">
+                        <barButtonItem key="rightBarButtonItem" title="Logout" id="BNv-b9-hsE">
+                            <connections>
+                                <action selector="onLogout:" destination="sa8-JA-FFP" id="a5d-G7-Kah"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="dayCounterLabel" destination="iBE-Tq-LTx" id="mFy-Pq-LZt"/>
                         <outlet property="hoursCounterLabel" destination="gf9-m6-sry" id="9JB-da-Ipp"/>
@@ -225,7 +220,7 @@
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GWj-vr-8XB">
                                         <rect key="frame" x="0.0" y="70" width="334" height="50"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lyu-1v-Dgd">
                                         <rect key="frame" x="0.0" y="140" width="334" height="50"/>

@@ -155,11 +155,11 @@
 		908A68A024286399008F0D42 /* iQuarantine */ = {
 			isa = PBXGroup;
 			children = (
+				908A68A124286399008F0D42 /* AppDelegate.swift */,
+				908A68A324286399008F0D42 /* SceneDelegate.swift */,
 				90EB03752429C72700463FD6 /* Extensions */,
 				90A2137C242940B400F0ADB7 /* Media */,
 				90A7A5612429260400C23C1F /* Helpers */,
-				908A68A124286399008F0D42 /* AppDelegate.swift */,
-				908A68A324286399008F0D42 /* SceneDelegate.swift */,
 				90A7A56024291FED00C23C1F /* ViewControllers */,
 				908A68A724286399008F0D42 /* Main.storyboard */,
 				908A68AA24286399008F0D42 /* Assets.xcassets */,
