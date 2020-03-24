@@ -25,7 +25,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func navigateToInitialVC(window: UIWindow?) {
-//        try! Auth.auth().signOut()
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if Auth.auth().currentUser != nil {
             guard let homeViewController = storyboard.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController else { return }
