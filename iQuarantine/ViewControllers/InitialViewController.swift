@@ -44,6 +44,7 @@ class InitialViewController: UIViewController {
                                          width: view.frame.size.width * 4,
                                          height: view.frame.size.height)
         view.layer.insertSublayer(videoPlayerLayer ?? AVPlayerLayer(), at: 0)
+        videoPlayer?.isMuted = true
         videoPlayer?.playImmediately(atRate: 0.6)
         loopVideo(videoPlayer: videoPlayer ?? AVPlayer())
     }

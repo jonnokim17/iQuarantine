@@ -56,7 +56,7 @@ class HomeViewController: UIViewController {
             startDate = timestamp.dateValue()
         }
         
-        let endOfDate = Date().endOfDay
+        let endOfDate = startDate.endOfDay
         let seconds = endOfDate.timeIntervalSince(startDate)
         self.timeLeft = seconds
         
