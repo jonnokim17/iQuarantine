@@ -27,9 +27,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private func navigateToInitialVC(window: UIWindow?) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if Auth.auth().currentUser != nil {
-            guard let homeViewController = storyboard.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController else { return }
-            let navVC = UINavigationController(rootViewController: homeViewController)
-            window?.rootViewController = navVC
+            guard let homeViewController = storyboard.instantiateViewController(identifier: Constants.Storyboard.homeTabBarController) as? UITabBarController else { return }
+            window?.rootViewController = homeViewController
             window?.makeKeyAndVisible()
         } else {
             guard let initialViewController = storyboard.instantiateViewController(identifier: Constants.Storyboard.initialViewController) as? InitialViewController else { return }

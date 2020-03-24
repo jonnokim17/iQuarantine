@@ -45,9 +45,8 @@ class LoginViewController: UIViewController {
     }
     
     private func navigateToHome() {
-        guard let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController else { return }
-        let navVC = UINavigationController(rootViewController: homeViewController)
-        view.window?.rootViewController = navVC
+        guard let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeTabBarController) as? UITabBarController else { return }
+        view.window?.rootViewController = homeViewController
         view.window?.makeKeyAndVisible()
     }
     
