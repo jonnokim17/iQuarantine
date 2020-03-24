@@ -15,8 +15,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AeO-oi-lHR">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="cdf-z9-XB9">
-                                <rect key="frame" x="40" y="736" width="334" height="120"/>
+                                <rect key="frame" x="40" y="726" width="334" height="120"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aoc-y4-LHe">
                                         <rect key="frame" x="0.0" y="0.0" width="334" height="50"/>
@@ -40,19 +43,34 @@
                                     <constraint firstItem="3rZ-7T-lBJ" firstAttribute="height" secondItem="aoc-y4-LHe" secondAttribute="height" id="sr3-Hg-qGR"/>
                                 </constraints>
                             </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.75" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iQuarantine" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ai8-An-Ghj">
+                                <rect key="frame" x="20" y="148" width="374" height="80"/>
+                                <fontDescription key="fontDescription" name="Noteworthy-Bold" family="Noteworthy" pointSize="50"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="cdf-z9-XB9" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="40" id="7El-LS-ggm"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="cdf-z9-XB9" secondAttribute="bottom" constant="6" id="iMT-ZN-NPq"/>
+                            <constraint firstItem="AeO-oi-lHR" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ICY-S6-aty"/>
+                            <constraint firstItem="ai8-An-Ghj" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="60" id="ICt-0G-cEy"/>
+                            <constraint firstItem="ai8-An-Ghj" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="Wg2-Kg-4TD"/>
+                            <constraint firstItem="AeO-oi-lHR" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="-88" id="ept-HR-mhP"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="cdf-z9-XB9" secondAttribute="bottom" constant="16" id="iMT-ZN-NPq"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ai8-An-Ghj" secondAttribute="trailing" constant="20" id="mvY-D2-vqL"/>
+                            <constraint firstAttribute="bottom" secondItem="AeO-oi-lHR" secondAttribute="bottom" id="ufW-H7-wH1"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="cdf-z9-XB9" secondAttribute="trailing" constant="40" id="vVR-pR-3Jw"/>
+                            <constraint firstItem="AeO-oi-lHR" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="yMQ-IY-voN"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="iQuarantine" id="kwc-KA-AWa"/>
                     <connections>
+                        <outlet property="backgroundImageView" destination="AeO-oi-lHR" id="TfZ-yX-BPf"/>
                         <outlet property="loginButton" destination="3rZ-7T-lBJ" id="7UL-rZ-zjt"/>
                         <outlet property="signUpButton" destination="aoc-y4-LHe" id="gXa-cl-mnL"/>
+                        <outlet property="titleLabel" destination="ai8-An-Ghj" id="rRU-p4-y5v"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

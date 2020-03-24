@@ -34,6 +34,7 @@ class Utilities {
         button.backgroundColor = UIColor.init(red: 48/255, green: 173/255, blue: 99/255, alpha: 1)
         button.layer.cornerRadius = 25.0
         button.tintColor = .white
+        button.alpha = 0.90
     }
     
     static func styleHollowButton(_ button:UIButton) {

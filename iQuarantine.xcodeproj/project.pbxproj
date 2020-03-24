@@ -17,13 +17,13 @@
 		908A68B924286399008F0D42 /* iQuarantineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 908A68B824286399008F0D42 /* iQuarantineTests.swift */; };
 		908A68C424286399008F0D42 /* iQuarantineUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 908A68C324286399008F0D42 /* iQuarantineUITests.swift */; };
 		90A2137B242934A700F0ADB7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A2137A242934A700F0ADB7 /* Constants.swift */; };
-		90A2137E242942E300F0ADB7 /* loginbg.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 90A2137D2429411D00F0ADB7 /* loginbg.mp4 */; };
 		90A7A55B24291FC100C23C1F /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A7A55A24291FC100C23C1F /* SignUpViewController.swift */; };
 		90A7A55D24291FC900C23C1F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A7A55C24291FC900C23C1F /* LoginViewController.swift */; };
 		90A7A55F24291FD800C23C1F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A7A55E24291FD800C23C1F /* HomeViewController.swift */; };
 		90A7A5632429261300C23C1F /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90A7A5622429261300C23C1F /* Utilities.swift */; };
 		90A7A56524292A5300C23C1F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 90A7A56424292A5300C23C1F /* GoogleService-Info.plist */; };
 		90EB03772429C73F00463FD6 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EB03762429C73F00463FD6 /* Date+Extension.swift */; };
+		90F319B9242A7FA000A82994 /* backgroundImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 90F319B8242A7FA000A82994 /* backgroundImage.jpg */; };
 		A0D9FBC3B49387DDA1BE9049 /* Pods_iQuarantine_iQuarantineUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B041A952D66F103DEBECC866 /* Pods_iQuarantine_iQuarantineUITests.framework */; };
 		FA8F656636CCA3BEF7755E79 /* Pods_iQuarantine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAAE4BC89C0EAAC811BCBF71 /* Pods_iQuarantine.framework */; };
 /* End PBXBuildFile section */
@@ -63,13 +63,13 @@
 		908A68C324286399008F0D42 /* iQuarantineUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iQuarantineUITests.swift; sourceTree = "<group>"; };
 		908A68C524286399008F0D42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		90A2137A242934A700F0ADB7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		90A2137D2429411D00F0ADB7 /* loginbg.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = loginbg.mp4; sourceTree = "<group>"; };
 		90A7A55A24291FC100C23C1F /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		90A7A55C24291FC900C23C1F /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		90A7A55E24291FD800C23C1F /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		90A7A5622429261300C23C1F /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		90A7A56424292A5300C23C1F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		90EB03762429C73F00463FD6 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		90F319B8242A7FA000A82994 /* backgroundImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = backgroundImage.jpg; sourceTree = "<group>"; };
 		B041A952D66F103DEBECC866 /* Pods_iQuarantine_iQuarantineUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iQuarantine_iQuarantineUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6BA2851CAED0F30D0CB3F24 /* Pods-iQuarantineTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iQuarantineTests.debug.xcconfig"; path = "Target Support Files/Pods-iQuarantineTests/Pods-iQuarantineTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B8498884C094740BFCA56F5D /* Pods_iQuarantineTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iQuarantineTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -191,7 +191,7 @@
 		90A2137C242940B400F0ADB7 /* Media */ = {
 			isa = PBXGroup;
 			children = (
-				90A2137D2429411D00F0ADB7 /* loginbg.mp4 */,
+				90F319B8242A7FA000A82994 /* backgroundImage.jpg */,
 			);
 			path = Media;
 			sourceTree = "<group>";
@@ -334,8 +334,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				908A68AE24286399008F0D42 /* LaunchScreen.storyboard in Resources */,
-				90A2137E242942E300F0ADB7 /* loginbg.mp4 in Resources */,
 				90A7A56524292A5300C23C1F /* GoogleService-Info.plist in Resources */,
+				90F319B9242A7FA000A82994 /* backgroundImage.jpg in Resources */,
 				908A68AB24286399008F0D42 /* Assets.xcassets in Resources */,
 				908A68A924286399008F0D42 /* Main.storyboard in Resources */,
 			);
