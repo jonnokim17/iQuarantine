@@ -49,6 +49,7 @@ class HomeViewController: UIViewController {
             self.startButton.isHidden = false
             return
         }
+        
         startDate = timestamp.dateValue()
         
         DispatchQueue.main.async {
@@ -73,15 +74,6 @@ class HomeViewController: UIViewController {
         let formattedHourString = String(format: "%02ld Hours, %02ld Minutes, %02ld Seconds", hour, minute, second)
         let cleanedHourFormattedString = formattedHourString.replacingOccurrences(of: "-", with: "")
         hoursCounterLabel.text = cleanedHourFormattedString
-    }
-    
-    func timeString(time: TimeInterval) -> String {
-        let hour = Int(time) / 3600
-        let minute = Int(time) / 60 % 60
-        let second = Int(time) % 60
-
-        // return formated string
-        return String(format: "%02i:%02i:%02i", hour, minute, second)
     }
     
     @IBAction func onStartQuarantine(_ sender: UIButton) {
