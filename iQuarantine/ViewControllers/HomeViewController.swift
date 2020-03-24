@@ -12,12 +12,10 @@ import Firebase
 class HomeViewController: UIViewController {
     
     @IBOutlet weak var startButton: UIButton!
-    @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var dayCounterLabel: UILabel!
     @IBOutlet weak var hoursCounterLabel: UILabel!
     
     var timeLeft: TimeInterval = 86400
-    var endTime: Date?
     var timer = Timer()
     
     let db = Firestore.firestore()
@@ -47,21 +45,14 @@ class HomeViewController: UIViewController {
     }
     
     private func startTimer() {
-        let endOfDate = Date().endOfDay
-        let seconds = endOfDate.timeIntervalSince(Date())
-        timeLeft = seconds
-        
         guard let timestamp = documentDataDict["timestamp"] as? Timestamp else {
             self.startButton.isHidden = false
-            self.timerLabel.text = "00:00:00"
             return
         }
         startDate = timestamp.dateValue()
         
         DispatchQueue.main.async {
             self.startButton.isHidden = true
-            self.timerLabel.text = self.timeString(time: self.timeLeft)
-            self.endTime = Date().addingTimeInterval(self.timeLeft)
             self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updateTime), userInfo: nil, repeats: true)
         }
     }
@@ -82,14 +73,6 @@ class HomeViewController: UIViewController {
         let formattedHourString = String(format: "%02ld Hours, %02ld Minutes, %02ld Seconds", hour, minute, second)
         let cleanedHourFormattedString = formattedHourString.replacingOccurrences(of: "-", with: "")
         hoursCounterLabel.text = cleanedHourFormattedString
-        
-        if timeLeft > 0 {
-            timeLeft = endTime?.timeIntervalSinceNow ?? 0
-            timerLabel.text = timeString(time: timeLeft)
-        } else {
-            timerLabel.text = "00:00"
-            timer.invalidate()
-        }
     }
     
     func timeString(time: TimeInterval) -> String {
@@ -108,35 +91,5 @@ class HomeViewController: UIViewController {
         ], merge: true)
         
         startTimer()
-    }
-}
-
-extension Date {
-
-    var startOfDay : Date {
-        let calendar = Calendar.current
-        let unitFlags = Set<Calendar.Component>([.year, .month, .day])
-        let components = calendar.dateComponents(unitFlags, from: self)
-        return calendar.date(from: components)!
-   }
-
-    var endOfDay : Date {
-        var components = DateComponents()
-        components.day = 1
-        let date = Calendar.current.date(byAdding: components, to: self.startOfDay)
-        return (date?.addingTimeInterval(-1))!
-    }
-}
-
-extension Date {
-
-    func interval(ofComponent comp: Calendar.Component, fromDate date: Date) -> Int {
-
-        let currentCalendar = Calendar.current
-
-        guard let start = currentCalendar.ordinality(of: comp, in: .era, for: date) else { return 0 }
-        guard let end = currentCalendar.ordinality(of: comp, in: .era, for: self) else { return 0 }
-
-        return end - start
     }
 }
