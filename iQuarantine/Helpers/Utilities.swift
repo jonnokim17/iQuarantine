@@ -37,7 +37,7 @@ class Utilities {
         button.alpha = 0.90
     }
     
-    static func styleHollowButton(_ button:UIButton) {
+    static func styleHollowButton(_ button: UIButton) {
         
         // Hollow rounded corner style
         button.layer.borderWidth = 2

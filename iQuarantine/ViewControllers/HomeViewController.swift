@@ -14,6 +14,7 @@ import CoreLocation
 class HomeViewController: UIViewController {
     
     @IBOutlet weak var startButton: UIButton!
+    @IBOutlet weak var instructionTextView: UITextView!
     @IBOutlet weak var dayCounterLabel: UILabel!
     @IBOutlet weak var hoursCounterLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
@@ -22,7 +23,6 @@ class HomeViewController: UIViewController {
     var timer = Timer()
     
     let db = Firestore.firestore()
-    var documentDataDict: [String: Any]!
     var startDate = Date()
     
     let locationManager = CLLocationManager()
@@ -33,6 +33,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         
         navigationController?.navigationBar.prefersLargeTitles = true
+        Utilities.styleFilledButton(startButton)
         
         guard let uid = Auth.auth().currentUser?.uid else { return }
         db.collection("users").document(uid).getDocument { [weak self] (document, error) in
@@ -41,7 +42,13 @@ class HomeViewController: UIViewController {
                 if let document = document, document.exists {
                     guard let documentData = document.data() else { return }
                     
-                    self.startTimer(data: documentData)
+                    let startedCounter = documentData["startedCounter"] as? Bool ?? false
+                    if startedCounter {
+                        self.startTimer(data: documentData)
+                    } else {
+                        self.startButton.isHidden = false
+                        self.instructionTextView.isHidden = false
+                    }
                 }
             }
         }
@@ -50,6 +57,7 @@ class HomeViewController: UIViewController {
     private func startTimer(data: [String: Any]) {
         guard let timestamp = data["timestamp"] as? Timestamp else {
             self.startButton.isHidden = false
+            self.instructionTextView.isHidden = false
             return
         }
         
@@ -57,6 +65,7 @@ class HomeViewController: UIViewController {
         
         DispatchQueue.main.async {
             self.startButton.isHidden = true
+            self.instructionTextView.isHidden = true
             self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.updateTime), userInfo: nil, repeats: true)
         }
     }
@@ -74,7 +83,7 @@ class HomeViewController: UIViewController {
         
         dayCounterLabel.text = "Number of Days: \(cleanedFormattedDayString)"
         
-        let formattedHourString = String(format: "%02ld Hours, %02ld Minutes, %02ld Seconds", hour, minute, second)
+        let formattedHourString = String(format: "%2ld Hours, %2ld Minutes, %2ld Seconds", hour, minute, second)
         let cleanedHourFormattedString = formattedHourString.replacingOccurrences(of: "-", with: "")
         hoursCounterLabel.text = cleanedHourFormattedString
         
@@ -133,17 +142,6 @@ class HomeViewController: UIViewController {
     }
     
     @IBAction func onStartQuarantine(_ sender: UIButton) {
-        let alertController = UIAlertController(title: "Please grant iQuarantine Location Services permissions", message: "", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
-            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.open(settingsURL)
-            }
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        alertController.addAction(okAction)
-        alertController.addAction(cancelAction)
-        present(alertController, animated: true)
-        
         guard let uid = Auth.auth().currentUser?.uid else { return }
         db.collection("users").document(uid).setData([
             "timestamp": Date()
@@ -156,23 +154,6 @@ class HomeViewController: UIViewController {
             }
         }
     }
-    
-    @IBAction func onLogout(_ sender: UIBarButtonItem) {
-        let alertController = UIAlertController(title: "Are you sure you want to logout?", message: "Quarantine clock will reset once you logout.", preferredStyle: .alert)
-        let yesAction = UIAlertAction(title: "Yes", style: .destructive) { _ in
-            try? Auth.auth().signOut()
-            if Auth.auth().currentUser == nil {
-                guard let initialViewController = self.storyboard?.instantiateViewController(identifier: Constants.Storyboard.initialViewController) as? InitialViewController else { return }
-                let navVC = UINavigationController(rootViewController: initialViewController)
-                self.view.window?.rootViewController = navVC
-                self.view.window?.makeKeyAndVisible()
-            }
-        }
-        let noAction = UIAlertAction(title: "No", style: .cancel)
-        alertController.addAction(yesAction)
-        alertController.addAction(noAction)
-        present(alertController, animated: true)
-    }
 }
 
 extension HomeViewController: CLLocationManagerDelegate {
@@ -181,6 +162,24 @@ extension HomeViewController: CLLocationManagerDelegate {
         let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         let region = MKCoordinateRegion.init(center: center, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
         mapView.setRegion(region, animated: true)
+        
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location, completionHandler: { [weak self] (placemarks, error) in
+            if error == nil, let placemark = placemarks, !placemark.isEmpty {
+                if let placemark = placemark.first {
+                    guard let city = placemark.locality else { return }
+                    guard let state = placemark.administrativeArea else { return }
+                    
+                    guard let uid = Auth.auth().currentUser?.uid else { return }
+                    self?.db.collection("users").document(uid).setData([
+                        "latitude": location.coordinate.latitude,
+                        "longitude": location.coordinate.longitude,
+                        "startedCounter": true,
+                        "homeLocation": "\(city), \(state)"
+                    ], merge: true)
+                }
+            }
+        })
     }
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {

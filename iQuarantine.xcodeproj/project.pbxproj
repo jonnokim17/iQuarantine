@@ -24,6 +24,7 @@
 		90A7A56524292A5300C23C1F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 90A7A56424292A5300C23C1F /* GoogleService-Info.plist */; };
 		90EB03772429C73F00463FD6 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EB03762429C73F00463FD6 /* Date+Extension.swift */; };
 		90F319B9242A7FA000A82994 /* backgroundImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 90F319B8242A7FA000A82994 /* backgroundImage.jpg */; };
+		90F319BB242A8D1600A82994 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90F319BA242A8D1600A82994 /* SettingsTableViewController.swift */; };
 		A0D9FBC3B49387DDA1BE9049 /* Pods_iQuarantine_iQuarantineUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B041A952D66F103DEBECC866 /* Pods_iQuarantine_iQuarantineUITests.framework */; };
 		FA8F656636CCA3BEF7755E79 /* Pods_iQuarantine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAAE4BC89C0EAAC811BCBF71 /* Pods_iQuarantine.framework */; };
 /* End PBXBuildFile section */
@@ -70,6 +71,7 @@
 		90A7A56424292A5300C23C1F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		90EB03762429C73F00463FD6 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		90F319B8242A7FA000A82994 /* backgroundImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = backgroundImage.jpg; sourceTree = "<group>"; };
+		90F319BA242A8D1600A82994 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		B041A952D66F103DEBECC866 /* Pods_iQuarantine_iQuarantineUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iQuarantine_iQuarantineUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6BA2851CAED0F30D0CB3F24 /* Pods-iQuarantineTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iQuarantineTests.debug.xcconfig"; path = "Target Support Files/Pods-iQuarantineTests/Pods-iQuarantineTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B8498884C094740BFCA56F5D /* Pods_iQuarantineTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iQuarantineTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -203,6 +205,7 @@
 				90A7A55A24291FC100C23C1F /* SignUpViewController.swift */,
 				90A7A55C24291FC900C23C1F /* LoginViewController.swift */,
 				90A7A55E24291FD800C23C1F /* HomeViewController.swift */,
+				90F319BA242A8D1600A82994 /* SettingsTableViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -471,6 +474,7 @@
 				90A7A55B24291FC100C23C1F /* SignUpViewController.swift in Sources */,
 				90A7A55D24291FC900C23C1F /* LoginViewController.swift in Sources */,
 				908A68A424286399008F0D42 /* SceneDelegate.swift in Sources */,
+				90F319BB242A8D1600A82994 /* SettingsTableViewController.swift in Sources */,
 				90A7A55F24291FD800C23C1F /* HomeViewController.swift in Sources */,
 				90A2137B242934A700F0ADB7 /* Constants.swift in Sources */,
 				90EB03772429C73F00463FD6 /* Date+Extension.swift in Sources */,

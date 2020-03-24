@@ -84,7 +84,8 @@ class SignUpViewController: UIViewController {
                 db.collection("users").document("\(result.user.uid)").setData([
                     "firstName": firstName,
                     "lastName": lastName,
-                    "uid": result.user.uid
+                    "uid": result.user.uid,
+                    "email": email
                 ]) { (err) in
                     if let err = err {
                         self?.showError(messsage: "Error: \(err.localizedDescription)")
