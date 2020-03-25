@@ -178,41 +178,43 @@ extension HomeViewController: CLLocationManagerDelegate {
         let region = MKCoordinateRegion.init(center: center, latitudinalMeters: regionInMeters, longitudinalMeters: regionInMeters)
         mapView.setRegion(region, animated: true)
         
-        let homeLocation = CLLocation(latitude: homeCoordinate.latitude, longitude: homeCoordinate.longitude)
-        let currentLocation = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-        let distanceInFeet = homeLocation.distance(from: currentLocation) * 3.281
+        if homeCoordinate.latitude != 0 && homeCoordinate.longitude != 0 {
+            let homeLocation = CLLocation(latitude: homeCoordinate.latitude, longitude: homeCoordinate.longitude)
+            let currentLocation = CLLocation(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+            let distanceInFeet = homeLocation.distance(from: currentLocation) * 3.281
 
-        currentDistanceLabel.text = String(format: "Distance from home: %.01f Feet", distanceInFeet)
-        
-        if distanceInFeet <= 200 {
-            currentDistanceLabel.textColor = .green
-        } else if distanceInFeet <= 800 {
-            currentDistanceLabel.textColor = .yellow
-        } else if distanceInFeet <= 1200 {
-            currentDistanceLabel.textColor = .red
-        } else if distanceInFeet >= 2000 {
-            currentDistanceLabel.textColor = .red
-            let alertController = UIAlertController(title: "Quarantine counter will now reset..", message: "Please return home!", preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
-                guard let uid = Auth.auth().currentUser?.uid else { return }
-                self.db.collection("users").document(uid).setData([
-                    "startedCounter": false
-                ], merge: true) { (error) in
-                    DispatchQueue.main.async {
-                        self.startButton.isHidden = false
-                        self.instructionTextView.isHidden = false
-                        self.warningLabel.isHidden = false
-                        self.mapView.isHidden = true
-                        self.currentDistanceLabel.isHidden = true
-                        self.dayCounterLabel.isHidden = true
-                        self.hoursCounterLabel.isHidden = true
-                        self.didStartCounter = false
+            currentDistanceLabel.text = String(format: "Distance from home: %.01f Feet", distanceInFeet)
+            
+            if distanceInFeet <= 200 {
+                currentDistanceLabel.textColor = .green
+            } else if distanceInFeet <= 800 {
+                currentDistanceLabel.textColor = .yellow
+            } else if distanceInFeet <= 1200 {
+                currentDistanceLabel.textColor = .red
+            } else if distanceInFeet >= 2000 {
+                currentDistanceLabel.textColor = .red
+                let alertController = UIAlertController(title: "Quarantine counter will now reset..", message: "Please return home!", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
+                    guard let uid = Auth.auth().currentUser?.uid else { return }
+                    self.db.collection("users").document(uid).setData([
+                        "startedCounter": false
+                    ], merge: true) { (error) in
+                        DispatchQueue.main.async {
+                            self.startButton.isHidden = false
+                            self.instructionTextView.isHidden = false
+                            self.warningLabel.isHidden = false
+                            self.mapView.isHidden = true
+                            self.currentDistanceLabel.isHidden = true
+                            self.dayCounterLabel.isHidden = true
+                            self.hoursCounterLabel.isHidden = true
+                            self.didStartCounter = false
+                        }
                     }
                 }
+                alertController.addAction(okAction)
+                present(alertController, animated: true)
+                return
             }
-            alertController.addAction(okAction)
-            present(alertController, animated: true)
-            return
         }
         
         let geocoder = CLGeocoder()
